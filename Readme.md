@@ -1,5 +1,5 @@
 # NiFiPulse
-We chose this name as we beleive it reflects the essence of our capstone project with Ark and DXC.
+We chose this name as we beleive it reflects the essence of our capstone project with ArkXJobInTech and DXC.
 **NiFiPulse** is a lightweight on-prem monitoring and alerting solution for Apache NiFi clusters.  
 It continuously tracks system and pipeline health: CPU, RAM, disk usage, file I/O, NiFi pipeline metrics, and more, then triggers alerts when thresholds are exceeded.
 
@@ -20,8 +20,8 @@ It continuously tracks system and pipeline health: CPU, RAM, disk usage, file I/
 |---------------------------|
 | Metrics Collector (Python)|
 | Alert Manager (FastAPI)   |
-| Data Storage (SQLite)     |
-| Dashboard (PowerBI)     |
+| Data Storage (postgresql) |
+| Dashboard (PowerBI)       |
 +---------------------------+
          ↑
          |
