@@ -13,20 +13,8 @@ It continuously tracks system and pipeline health: CPU, RAM, disk usage, file I/
 - 🔐 **Secure Configuration** – Credentials and endpoints are managed via `.env` files.
 
 ## Architecture
+![Architecture](images/architecture.jpg) 
 
-```text
-+---------------------------+
-|        NiFiPulse          |
-|---------------------------|
-| Metrics Collector (Python)|
-| Alert Manager (FastAPI)   |
-| Data Storage (postgresql) |
-| Dashboard (PowerBI)       |
-+---------------------------+
-         ↑
-         |
-     NiFi API
-```
 # For Collaborators
 - run `git clone https://github.com/DXC-DP-Monitoring/NiFiPulse.git` on your local machine, on your preferred folder.
 
