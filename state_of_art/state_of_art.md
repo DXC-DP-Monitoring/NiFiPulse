@@ -1,5 +1,5 @@
 ## State of Art
-#  État de l’art : Supervision et Observabilité des Pipelines de Données
+#  État de l’art : Supervision des Pipelines de Données
 
 ## 1. Introduction
 
