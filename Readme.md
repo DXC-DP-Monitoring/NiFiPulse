@@ -13,16 +13,18 @@ It continuously tracks system and pipeline health: CPU, RAM, disk usage, file I/
 - 🔐 **Secure Configuration** – Credentials and endpoints are managed via `.env` files.
 
 ## Architecture
-![Architecture](images/architecture.jpg) 
+![Architecture](images/Architecture.PNG) 
 
 ## State of Art
 - [State of Art FR](state_of_art/state_of_art.md)
 - [State of Art Eng](state_of_art/state_of_art_eng.md)
+
 # For Collaborators
 - run `git clone https://github.com/DXC-DP-Monitoring/NiFiPulse.git` on your local machine, on your preferred folder.
 ## Pull for updates
 - run `git branch` to make sure you are on main , if not run `git checkout main`
 - run `git pull origin main`, this will fetche updates from the remote repo (`origin`) and merges them into your local `main` branch
+- To keep the history linear: `git fetch origin` + `git rebase origin\main` (no merge)
 
 ## License
 
