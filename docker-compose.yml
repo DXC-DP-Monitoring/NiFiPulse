@@ -4,10 +4,24 @@ services:
     container_name: nifi
     ports:
       - "8080:8080"
+      - "9092:9092"
     environment:
       - NIFI_WEB_HTTP_PORT=8080
+      - NIFI_REGISTRY_URL=http://nifi-registry:18080
+    depends_on:
+      - nifi-registry
     volumes:
       - ./nifi_data:/opt/nifi/nifi-current/data
+      - ./nifi_logs:/opt/nifi/nifi-current/logs
+    restart: unless-stopped
+
+  nifi-registry:
+    image: apache/nifi-registry:1.22.0
+    container_name: nifi-registry
+    ports:
+      - "18080:18080"
+    volumes:
+      - ./nifi_registry_data:/opt/nifi-registry/nifi-registry-current/data
     restart: unless-stopped
 
   prometheus:
