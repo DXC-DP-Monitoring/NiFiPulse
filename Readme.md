@@ -16,8 +16,14 @@ It continuously tracks system and pipeline health: CPU, RAM, disk usage, file I/
 ![Architecture](images/Architecture.PNG) 
 
 ## State of Art
-- [State of Art FR](state_of_art/state_of_art.md)
-- [State of Art Eng](state_of_art/state_of_art_eng.md)
+- [State of Art FR](state_of_art/Etat_de_l_art.pdf)
+- [State of Art Eng](state_of_art/State_of_art.pdf)
+
+## Data Simulation
+
+### Files:
+-`docker exec -it nifi /bin/bash` + `ls -l /opt/nifi/nifi-current/data/outgoing` to list simulated data files from NiFi.
+- [Similated file workflows](simulation/file_simulation.md)
 
 # For Collaborators
 - run `git clone https://github.com/DXC-DP-Monitoring/NiFiPulse.git` on your local machine, on your preferred folder.

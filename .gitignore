@@ -1,1 +1,6 @@
+.env
 nifi_data
+nifi_logs
+nifi_registry_data
+processes
+metrics_logs.csv
