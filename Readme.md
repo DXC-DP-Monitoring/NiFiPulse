@@ -5,7 +5,7 @@ It continuously tracks system and pipeline health: CPU, RAM, disk usage, file I/
 
 ## Features
 
-- 📊 **Metrics Collection** – Gather CPU, RAM, file system, and NiFi flow stats.  
+- 📊 **Metrics Collection** – Gather CPU, RAM, file system, and NiFi flow stats.  [nifi_flows](nifi_flows)
 - 🧩 **NiFi Integration** – Connects directly with NiFi APIs to pull processor and queue metrics.  
 - ⚠️ **Alerting Engine** – Send email, Slack, or webhook alerts based on user-defined thresholds.  
 - 🧠 **Custom Dashboards** – Visualize health trends and performance over time.  
@@ -24,6 +24,10 @@ It continuously tracks system and pipeline health: CPU, RAM, disk usage, file I/
 ### Files:
 -`docker exec -it nifi /bin/bash` + `ls -l /opt/nifi/nifi-current/data/outgoing` to list simulated data files from NiFi.
 - [Similated file workflows](simulation/file_simulation.md)
+
+## Configuration files
+- [docker set-up for Nifi and Prometheus](docker-compose.yml)
+- [Prometheus job configuration file](prometheus.yml)
 
 # For Collaborators
 - run `git clone https://github.com/DXC-DP-Monitoring/NiFiPulse.git` on your local machine, on your preferred folder.
