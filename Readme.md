@@ -16,6 +16,7 @@ It continuously tracks system and pipeline health: CPU, RAM, disk usage, file I/
 ![Architecture](images/Architecture.PNG) 
 #
 - Flow of simulation and extraction part in depth:
+#
 ![simulation-extraction](images/simulation-extraction.png)
 ## State of Art
 - [State of Art FR](state_of_art/Etat_de_l_art.pdf)
