@@ -3,4 +3,4 @@ nifi_data
 nifi_logs
 nifi_registry_data
 prometheus_metrics_log.csv
-
+.~lock.prometheus_metrics_log*
