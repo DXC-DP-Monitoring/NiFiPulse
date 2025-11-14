@@ -1,3 +1,4 @@
+*.csv
 .env
 nifi_data
 nifi_logs
