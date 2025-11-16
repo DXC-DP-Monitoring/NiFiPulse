@@ -2,6 +2,6 @@
 ## Simple CPU flow on Nifi UI 
 ![CpuFlow](../images/cpuFlow.png)
 ## Nifi flow 
-![NifiFlow](../images/NifiFlow.png)
+![NifiFlow](../images/NifiFlow_cpu.png)
 
 
