@@ -7,4 +7,4 @@ nifi_registry_data
 prometheus_metrics_log.csv
 .~lock.prometheus_metrics_log*
 collected_ram_workflow_metrics.csv
-ram_metrics1.csv
+ram_nifi_metric.csv
