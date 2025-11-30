@@ -23,10 +23,13 @@ It continuously tracks system and pipeline health: CPU, RAM, disk usage, file I/
 - [State of Art Eng](state_of_art/State_of_art.pdf)
 
 ## Data Simulation
+Nifi Registery config
+- [Nifi Prometheus Registery config](simulation/nifi_prom_conf.md)
 
 ### Files:
 -`docker exec -it nifi /bin/bash` + `ls -l /opt/nifi/nifi-current/data/outgoing` to list simulated data files from NiFi.
 - [Similated file workflows](simulation/file_simulation.md)
+- [Similated Pipeline (success/failure)](simulation/pipeline_simulation.md)
 
 ## Configuration files
 - [docker set-up for Nifi and Prometheus](docker-compose.yml)
