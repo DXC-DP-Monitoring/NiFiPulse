@@ -1,4 +1,6 @@
 
+CREATE DATABASE metrics_db;
+
 
 -- 1. TABLE INSTANCE
 CREATE TABLE IF NOT EXISTS dim_instance (

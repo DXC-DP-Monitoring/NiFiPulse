@@ -8,7 +8,7 @@ df['timestamp_utc'] = pd.to_datetime(df['timestamp_utc'], utc=True)
 
 #  Connexion PostgreSQL
 
-engine = create_engine("postgresql+psycopg2://postgres:fadwa@localhost:5432/metrics_db")
+engine = create_engine("postgresql+psycopg2://postgres:..../metrics_db")
 
 print("- Connexion PostgreSQL OK")
 
