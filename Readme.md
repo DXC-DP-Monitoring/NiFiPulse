@@ -7,17 +7,14 @@ It continuously tracks system and pipeline health: CPU, RAM, disk usage, file I/
 
 - 📊 **Metrics Collection** – Gather CPU, RAM, file system, and NiFi flow stats.  [nifi_flows](nifi_flows)
 - 🧩 **NiFi Integration** – Connects directly with NiFi APIs to pull processor and queue metrics.  
-- ⚠️ **Alerting Engine** – Send email, Slack, or webhook alerts based on user-defined thresholds.  
+- ⚠️ **Alerting Engine** – Send email, Slack, or webhook alerts based on user-defined thresholds.  [Alerting](Alerting/Alerting.md)
 - 🧠 **Custom Dashboards** – Visualize health trends and performance over time.  
-- 🛠️ **On-Prem Ready** – Designed for environments without external cloud dependencies.  
+- 🛠️ **On-Prem Ready** – Designed for environments without external cloud dependencies.  [Docker](docker-compose.yml)
 - 🔐 **Secure Configuration** – Credentials and endpoints are managed via `.env` files.
 
 ## Architecture
-![Architecture](images/Architecture.PNG) 
-#
-- Flow of simulation and extraction part in depth:
-#
-![simulation-extraction](images/simulation-extraction.png)
+![nifi_architecture](images/nifi_architecture.png) 
+
 ## State of Art
 - [State of Art FR](state_of_art/Etat_de_l_art.pdf)
 - [State of Art Eng](state_of_art/State_of_art.pdf)
@@ -34,6 +31,8 @@ Nifi Registery config
 ## Configuration files
 - [docker set-up for Nifi and Prometheus](docker-compose.yml)
 - [Prometheus job configuration file](prometheus.yml)
+- [Grafana dashboards configuration](grafana/dashboards/dashboard.yml)
+- [Grafana datasource configuration](grafana/dashboards/datasource.yml)
 
 # For Collaborators
 - run `git clone https://github.com/DXC-DP-Monitoring/NiFiPulse.git` on your local machine, on your preferred folder.
