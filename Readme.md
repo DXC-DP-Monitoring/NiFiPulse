@@ -8,7 +8,7 @@ It continuously tracks system and pipeline health: CPU, RAM, disk usage, file I/
 - 📊 **Metrics Collection** – Gather CPU, RAM, file system, and NiFi flow stats.  [nifi_flows](nifi_flows)
 - 🧩 **NiFi Integration** – Connects directly with NiFi APIs to pull processor and queue metrics.  
 - ⚠️ **Alerting Engine** – Send email, Slack, or webhook alerts based on user-defined thresholds.  [Alerting](Alerting/Alerting.md)
-- 🧠 **Custom Dashboards** – Visualize health trends and performance over time.  
+- 🧠 **Custom Dashboards** – Visualize health trends and performance over time.   [grafana](grafana/dashboards)
 - 🛠️ **On-Prem Ready** – Designed for environments without external cloud dependencies.  [Docker](docker-compose.yml)
 - 🔐 **Secure Configuration** – Credentials and endpoints are managed via `.env` files.
 

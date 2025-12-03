@@ -9,3 +9,4 @@ prometheus_metrics_log.csv
 collected_ram_workflow_metrics.csv
 ram_nifi_metric.csv
 grafana-data
+pgdata
