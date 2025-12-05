@@ -63,6 +63,16 @@ services:
       - ./db/init:/docker-entrypoint-initdb.d:ro
     restart: unless-stopped
 
+  loader:
+    build: .
+    container_name: nifipulse-loader
+    depends_on:
+      - postgres
+    volumes:
+      - .:/app
+    working_dir: /app/loader
+    command: tail -f /dev/null
+    restart: unless-stopped
 volumes:
   grafana-data:
   pgdata:

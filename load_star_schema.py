@@ -3,12 +3,16 @@ from sqlalchemy import create_engine, text
 
 #  Charger le CSV
 csv_file = "nifi_metrics_propre.csv"
+
 df = pd.read_csv(csv_file, parse_dates=['timestamp_utc'])
 df['timestamp_utc'] = pd.to_datetime(df['timestamp_utc'], utc=True)
 
 #  Connexion PostgreSQL
 
-engine = create_engine("postgresql+psycopg2://postgres:..../metrics_db")
+engine = create_engine(
+    "postgresql+psycopg2://postgres:postgres@postgres:5432/metrics_db"
+)
+
 
 print("- Connexion PostgreSQL OK")
 
