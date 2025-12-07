@@ -12,6 +12,10 @@
 ![Queue Alerting Flow](../images/Alerting_Que.png)
 ## Email Alert Output
 ![Email Alert Output](../images/Alerting_Email.png)
+## Email Alert Output after Ux :Ex cpu metric
+![Email Alert Output:Ex cpu metric](../images/EMAIL_Ou_CPU.png)
+## Email Alert Output after Ux :Ex threads metric
+![Email Alert Output:Ex threads metric](../images/EMAIL_Ou_THR.png)
 ## URL Alert Output
 ![URL Alert Output](../images/alerting_url.png)
 
