@@ -1,0 +1,26 @@
+[project]
+name = "nifipulse"
+version = "0.1.0"
+description = "NiFi metrics ETL and Grafana dashboard tooling"
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{ name = "Amina BOUHAMRA, Soukaina BOUCETTA, Nawar TOUMI, Fadwa EL AMRAOUI" }]
+dependencies = [
+  "requests",
+  "pandas",
+  "sqlalchemy",
+  "psycopg2-binary",
+]
+
+[project.scripts]
+nifipulse = "nifipulse.cli:main"
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["nifipulse*"]
+
+[tool.setuptools.package-data]
+nifipulse = ["metrics_list.txt"]
