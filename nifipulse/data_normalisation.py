@@ -1,12 +1,8 @@
 import csv
-import datetime
 import hashlib
+import nifipulse.config as config
 
-#  CONFIGURATION 
-INPUT_FILE = 'prometheus_metrics_log.csv'  #  fichier source
-OUTPUT_FILE = 'nifi_metrics_propre.csv' #  résultat
 
-# Dictionnaire de mapping pour renommer les métriques 
 METRIC_MAPPING = {
     "nifi_amount_flowfiles_received": "flowfiles_received",
     "nifi_amount_flowfiles_sent": "flowfiles_sent",
@@ -36,13 +32,13 @@ def generate_unique_id(timestamp, instance, metric, component):
     return hashlib.md5(unique_string.encode('utf-8')).hexdigest()
 
 def process_data():
-    print(f" Démarrage du traitement de {INPUT_FILE} ")
+    print(f" Démarrage du traitement de {config.env.CSV_SINK} ")
     
     stats = {"total": 0, "kept": 0, "filtered": 0}
     
     try:
-        with open(INPUT_FILE, 'r', encoding='utf-8') as f_in, \
-             open(OUTPUT_FILE, 'w', encoding='utf-8', newline='') as f_out:
+        with open(config.env.CSV_SINK, 'r', encoding='utf-8') as f_in, \
+             open(config.env.CLEAN_DATA, 'w', encoding='utf-8', newline='') as f_out:
             
             reader = csv.DictReader(f_in)
             
@@ -109,14 +105,11 @@ def process_data():
                 stats["kept"] += 1
 
     except FileNotFoundError:
-        print(f"Erreur : Le fichier {INPUT_FILE} n'existe pas.")
+        print(f"Erreur : Le fichier {config.env.CSV_SINK} n'existe pas.")
         return
 
     print(" Traitement terminé ")
     print(f"Lignes lues      : {stats['total']}")
     print(f"Lignes filtrées  : {stats['filtered']} (Zeros inutiles)")
-    print(f"Lignes gardées   : {stats['kept']} (Sauvegardées dans {OUTPUT_FILE})")
+    print(f"Lignes gardées   : {stats['kept']} (Sauvegardées dans {config.env.CLEAN_DATA})")
     print(f"Taux de réduction: {round((stats['filtered']/stats['total'])*100, 1)}%")
-
-if __name__ == "__main__":
-    process_data()
