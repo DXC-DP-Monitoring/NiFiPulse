@@ -13,7 +13,7 @@ It continuously tracks system and pipeline health: CPU, RAM, disk usage, file I/
 - 🔐 **Secure Configuration** – Credentials and endpoints are managed via `.env` files.
 
 ## Architecture
-![nifi_architecture](images/nifi_architecture.png) 
+![nifi_architecture](images/nifi_archi.png) 
 
 ## State of Art
 - [State of Art FR](state_of_art/Etat_de_l_art.pdf)
