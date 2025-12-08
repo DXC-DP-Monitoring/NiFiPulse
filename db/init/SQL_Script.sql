@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS dim_metric (
     original_unit VARCHAR(50)
 );
 
--- 3. TABLE COMPONENT
+-- 3 TABLE COMPONENT
 CREATE TABLE IF NOT EXISTS dim_component (
     component_id SERIAL PRIMARY KEY,
     component_name VARCHAR(255) NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS dim_component (
     UNIQUE (component_name, component_type)
 );
 
--- 4. TABLE DATE
+-- 4 TABLE DATE
 CREATE TABLE IF NOT EXISTS dim_date (
     date_id SERIAL PRIMARY KEY,
     timestamp_utc TIMESTAMPTZ NOT NULL UNIQUE,
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS dim_date (
     second INT
 );
 
--- 5. FACT TABLE
+-- 5 FACT TABLE
 CREATE TABLE IF NOT EXISTS fact_metrics (
     fact_id SERIAL PRIMARY KEY,
     date_id INT REFERENCES dim_date(date_id),

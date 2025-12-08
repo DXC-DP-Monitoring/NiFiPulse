@@ -27,7 +27,7 @@ with engine.begin() as conn:
             ON CONFLICT (instance_name) DO NOTHING;
         """), {"inst": inst})
 
-    # dim_metric
+    # dim_metric 
     for metric, unit in df[['metric_name', 'original_unit']].drop_duplicates().values:
         conn.execute(text("""
             INSERT INTO dim_metric (metric_name, original_unit)
