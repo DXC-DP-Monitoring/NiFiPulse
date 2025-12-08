@@ -3,12 +3,16 @@ from sqlalchemy import create_engine, text
 
 #  Charger le CSV
 csv_file = "nifi_metrics_propre.csv"
+
 df = pd.read_csv(csv_file, parse_dates=['timestamp_utc'])
 df['timestamp_utc'] = pd.to_datetime(df['timestamp_utc'], utc=True)
 
 #  Connexion PostgreSQL
 
-engine = create_engine("postgresql+psycopg2://postgres:..../metrics_db")
+engine = create_engine(
+    "postgresql+psycopg2://postgres:postgres@postgres:5432/metrics_db"
+)
+
 
 print("- Connexion PostgreSQL OK")
 
@@ -61,7 +65,7 @@ dim_date = pd.read_sql("SELECT * FROM dim_date;", engine)
 
 dim_date['timestamp_utc'] = pd.to_datetime(dim_date['timestamp_utc'], utc=True)
 
-# Mergee
+# Merge
 df_facts = df.merge(dim_instance, left_on='instance', right_on='instance_name')
 df_facts = df_facts.merge(dim_metric, on='metric_name')
 df_facts = df_facts.merge(dim_component, on=['component_name', 'component_type'])
