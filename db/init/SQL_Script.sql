@@ -4,7 +4,7 @@ WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'metrics_db')\gexec
 
 \connect metrics_db;
 
--- 1. TABLE INSTANCE
+-- 1 TABLE INSTANCE
 CREATE TABLE IF NOT EXISTS dim_instance (
     instance_id SERIAL PRIMARY KEY,
     instance_name VARCHAR(255) UNIQUE NOT NULL

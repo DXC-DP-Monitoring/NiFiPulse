@@ -57,7 +57,7 @@ with engine.begin() as conn:
 
 print("- Dimensions insérées")
 
-#  CHARGER LES IDS
+#  CHARGER LES IDS.
 dim_instance = pd.read_sql("SELECT * FROM dim_instance;", engine)
 dim_metric = pd.read_sql("SELECT * FROM dim_metric;", engine)
 dim_component = pd.read_sql("SELECT * FROM dim_component;", engine)
