@@ -61,7 +61,7 @@ dim_date = pd.read_sql("SELECT * FROM dim_date;", engine)
 
 dim_date['timestamp_utc'] = pd.to_datetime(dim_date['timestamp_utc'], utc=True)
 
-# Merge
+# Mergee
 df_facts = df.merge(dim_instance, left_on='instance', right_on='instance_name')
 df_facts = df_facts.merge(dim_metric, on='metric_name')
 df_facts = df_facts.merge(dim_component, on=['component_name', 'component_type'])

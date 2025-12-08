@@ -2,7 +2,7 @@
 CREATE DATABASE metrics_db;
 
 
--- 1. TABLE INSTANCE
+-- 1 TABLE INSTANCE
 CREATE TABLE IF NOT EXISTS dim_instance (
     instance_id SERIAL PRIMARY KEY,
     instance_name VARCHAR(255) UNIQUE NOT NULL
