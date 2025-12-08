@@ -1,5 +1,8 @@
+-- Create database if not exists
+SELECT 'CREATE DATABASE metrics_db'
+WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'metrics_db')\gexec
 
-CREATE DATABASE metrics_db;
+\connect metrics_db;
 
 
 -- 1. TABLE INSTANCE
