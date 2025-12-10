@@ -15,9 +15,13 @@ It continuously tracks system and pipeline health: CPU, RAM, disk usage, file I/
 ## Use:
 After running `docker compose up` run:
 - Run SQL init inside the container : `docker exec -it postgres sh -c 'psql -U postgres -d postgres -f /docker-entrypoint-initdb.d/SQL_Script.sql'`
-- Verify tables: `docker exec -it postgres sh -c 'psql -U postgres -d metrics_db -c "\dt"'`
+- Verify tables: 
+  1. Ubuntu: `docker exec -it postgres sh -c 'psql -U postgres -d metrics_db -c "\dt"'`
+  2. Windows: `docker exec -it postgres psql -U postgres -d metrics_db -c "\dt"`
+- Run: `pip install -e .`
 - Run ETL: `nifipulse --poll <number_of_polls_10_by_default_0_for_infinite>`
 - Run quick sanity check:
+1. **Ubuntu:**
 --- 
     docker exec -it postgres sh -c 'psql -U postgres -d metrics_db -c "
     SELECT f.fact_id, d.timestamp_utc, i.instance_name, m.metric_name, c.component_name, f.value
@@ -28,6 +32,19 @@ After running `docker compose up` run:
     JOIN dim_component c ON c.component_id = f.component_id
     ORDER BY d.timestamp_utc DESC
     LIMIT 20;"'
+---
+
+1. **Windows:**
+---
+    docker exec -it postgres psql -U postgres -d metrics_db -c "
+    SELECT f.fact_id, d.timestamp_utc, i.instance_name, m.metric_name, c.component_name, f.value
+    FROM fact_metrics f
+    JOIN dim_date d      ON d.date_id = f.date_id
+    JOIN dim_instance i  ON i.instance_id = f.instance_id
+    JOIN dim_metric m    ON m.metric_id = f.metric_id
+    JOIN dim_component c ON c.component_id = f.component_id
+    ORDER BY d.timestamp_utc DESC
+    LIMIT 20;"
 ---
 
 ## Architecture
