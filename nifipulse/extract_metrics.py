@@ -7,6 +7,7 @@ from datetime import datetime
 from importlib.resources import files
 from nifipulse.utils import abs_ff_path, path_tofolder, _csv_has_rows
 from nifipulse.data_normalisation import process_data
+from nifipulse.load_postgres import load_postgres
 
 def nifipulse(poll_count=10, interval=5):
     """
@@ -33,6 +34,14 @@ def nifipulse(poll_count=10, interval=5):
         process_data()
     else:
         print("No polled rows written; skipping normalization.")
+        return
+
+    #Only load to Postgres if cleaned data exists
+    if _csv_has_rows(config.env.CLEAN_DATA):
+        load_postgres(config.env.CLEAN_DATA)
+    else:
+        print("No cleaned data to load into Postgres; skipping load.")
+        return
 
 def poll_metrics(interval=None, save_csv=True, metrics=None, count=10):
     if metrics is None or not metrics:
