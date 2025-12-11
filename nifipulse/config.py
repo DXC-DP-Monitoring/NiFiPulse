@@ -1,9 +1,21 @@
+import os
+from urllib.parse import quote_plus
+
 class BaseConfig:
     # Shared defaults
     RESULTS_DIR = "results"
     PROM_URL = "http://localhost:9090/api/v1/query"
     CSV_SINK = "results/prometheus_metrics_log.csv"
     CLEAN_DATA = "results/nifi_metrics_propre.csv" 
+    # Build DSN from env (override PGHOST to 'postgres' when running inside Docker)
+    PW = quote_plus(os.getenv('PGPASSWORD', 'postgres'))
+    PG_DSN = os.getenv(
+        "PG_DSN",
+        "postgresql+psycopg2://"
+        f"{os.getenv('PGUSER','postgres')}:{PW}@"
+        f"{os.getenv('PGHOST','localhost')}:{os.getenv('PGPORT','5432')}/"
+        f"{os.getenv('PGDATABASE','metrics_db')}"
+    )
 class DevConfig(BaseConfig):
     pass
 
@@ -27,3 +39,21 @@ def set_env(env_name):
         env = ENV_MAP[env_name]
     except KeyError:
         raise ValueError(f"Unknown environment: {env_name}")
+
+def set_env_from_branch(branch_name: str):
+    """
+    Map Git branch to environment: main->prod, staging->staged, dev->dev
+    """
+    mapping = {"main": "prod", "staging": "staged", "dev": "dev"}
+    set_env(mapping.get(branch_name, "prod"))
+
+def auto_set_env():
+    name = os.getenv("NIFIPULSE_ENV")
+    if name:
+        set_env(name)
+        return
+    branch = os.getenv("GITHUB_REF_NAME") or (os.getenv("GITHUB_REF","").split("/")[-1] or "main")
+    set_env_from_branch(branch)
+
+if os.getenv("NIFIPULSE_AUTO_ENV") == "1":
+    auto_set_env()

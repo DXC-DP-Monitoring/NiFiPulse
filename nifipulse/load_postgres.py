@@ -1,5 +1,6 @@
 import pandas as pd
 from sqlalchemy import create_engine, text
+from nifipulse import config
 
 def load_postgres(clean_data):
     print(" inserting into PostgreSQL ... ")
@@ -7,11 +8,11 @@ def load_postgres(clean_data):
     df['timestamp_utc'] = pd.to_datetime(df['timestamp_utc'], utc=True)
 
     #  Connexion PostgreSQL
-
+    # Use DSN from config (works on host and in Docker; override via env)
     engine = create_engine(
-        "postgresql+psycopg2://postgres:postgres@localhost:5432/metrics_db"
+        config.env.PG_DSN,
+        connect_args={"options": "-c client_encoding=UTF8"}
     )
-    
 
     print("- Connexion PostgreSQL OK")
 
