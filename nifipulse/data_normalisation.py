@@ -14,23 +14,6 @@ METRIC_MAPPING = {
     "nifi_amount_bytes_received": "bytes_received"
 }
 
-def get_component_type(name):
-    # Détermine le type de composant (Enrichissement)
-    name = name.strip()
-    if name == "NiFi Flow":
-        return "Root" # Le cluster global
-    elif name in ["RAMFLOW", "NiFi Flow CPU", "NiFi_Flow_debit"]:
-        return "ProcessGroup" #  groupes de simulation
-    else:
-        return "Processor" # Par défaut (PutFile, GenerateFlowFile, etc.)
-
-def generate_unique_id(timestamp, instance, metric, component):
-    """Etape 5: Génère un ID unique pour la déduplication"""
-    # On concatène les champs clés pour créer une signature unique
-    unique_string = f"{timestamp}_{instance}_{metric}_{component}"
-    # On hash cette chaîne (MD5) pour avoir un ID propre
-    return hashlib.md5(unique_string.encode('utf-8')).hexdigest()
-
 def process_data():
     print(f" Démarrage du traitement de {config.env.CSV_SINK} ")
     
@@ -82,14 +65,14 @@ def process_data():
                 
                 #  ENRICHISSEMENT 
                 comp_name = row['component_name']
-                comp_type = get_component_type(comp_name)
+                comp_type = row['component_type']
                 
                 # Conversion Timestamp (Nettoyage format ISO)
                 
                 ts_raw = row['timestamp']
                 
                 #  DEDUPLICATION (Génération ID unique) 
-                unique_id = generate_unique_id(ts_raw, row['instance'], clean_metric, comp_name)
+                unique_id = row['component_id']
                 
                 # Écriture de la ligne propre
                 writer.writerow({
