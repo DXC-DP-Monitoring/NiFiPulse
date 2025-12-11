@@ -52,7 +52,7 @@ def poll_metrics(interval=None, save_csv=True, metrics=None, count=10):
     # Initialize CSV with headers
     if save_csv:
         with open(config.env.CSV_SINK, "w", newline="") as f:
-            writer = csv.DictWriter(f, fieldnames=["timestamp", "instance", "metric_name", "component_name", "value"])
+            writer = csv.DictWriter(f, fieldnames=["timestamp", "instance", "metric_name", "component_id", "component_name", "component_type", "value"])
             writer.writeheader()
 
     cycle = 0
@@ -81,18 +81,21 @@ def poll_metrics(interval=None, save_csv=True, metrics=None, count=10):
                     instance = labels.get("instance", "unknown")
                     component_name = labels.get("component_name", "unknown")
                     value = metric.get("value", ["0", "0"])[1]
-
+                    component_id = labels.get("component_id", "unknown")
+                    component_type = labels.get("component_type", "unknown")
                     print(f"→ {component_name} ({instance}): {value}")
 
                     if save_csv:
                         with open(config.env.CSV_SINK, "a", newline="") as f:
-                            writer = csv.DictWriter(f, fieldnames=["timestamp", "instance", "metric_name", "component_name", "value"])
+                            writer = csv.DictWriter(f, fieldnames=["timestamp", "instance", "metric_name", "component_id", "component_name", "component_type", "value"])
                             writer.writerow({
                                 "timestamp": timestamp,
                                 "instance": instance,
                                 "metric_name": metric_name,
                                 "component_name": component_name,
-                                "value": value
+                                "value": value,
+                                "component_id": component_id,
+                                "component_type": component_type
                             })
 
             except Exception as e:
