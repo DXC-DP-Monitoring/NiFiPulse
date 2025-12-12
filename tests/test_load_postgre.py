@@ -1,11 +1,10 @@
-import pytest
 import pandas as pd
 from unittest.mock import patch, MagicMock
+from sqlalchemy.sql.elements import TextClause
 from nifipulse.load_postgres import load_postgres
 
 
 def test_load_postgres_success(tmp_path):
-
     # Create fake CSV
     csv_file = tmp_path / "sample.csv"
     csv_file.write_text(
@@ -62,14 +61,18 @@ def test_load_postgres_success(tmp_path):
 
     with patch("nifipulse.load_postgres.create_engine", return_value=mock_engine), \
          patch("nifipulse.load_postgres.pd.read_sql", side_effect=read_sql_side_effect):
-
         load_postgres(str(csv_file))
 
-    # Assertions
-    calls = [c.args[0].text for c in mock_conn.execute.call_args_list]
+    # rom sqlalchemy.sql.elements import TextClause
+    texts = []
+    for c in mock_conn.execute.call_args_list:
+        arg0 = c.args[0]
+        if isinstance(arg0, TextClause):
+            texts.append(arg0.text)
 
-    assert any("INSERT INTO dim_instance" in sql for sql in calls)
-    assert any("INSERT INTO dim_metric" in sql for sql in calls)
-    assert any("INSERT INTO dim_component" in sql for sql in calls)
-    assert any("INSERT INTO dim_date" in sql for sql in calls)
-    assert any("INSERT INTO fact_metrics" in sql for sql in calls)
+    assert any("SELECT 1 FROM dim_instance" in sql for sql in texts), "Schema check missing"
+    assert any("INSERT INTO dim_instance" in sql for sql in texts)
+    assert any("INSERT INTO dim_metric" in sql for sql in texts)
+    assert any("INSERT INTO dim_component" in sql for sql in texts)
+    assert any("INSERT INTO dim_date" in sql for sql in texts)
+    assert any("INSERT INTO fact_metrics" in sql for sql in texts), "Fact insert missing"

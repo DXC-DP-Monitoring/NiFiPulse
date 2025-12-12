@@ -1,12 +1,7 @@
 import csv
-import os
-import tempfile
-import builtins
-import pytest
-
 import nifipulse.config as config
 from nifipulse.data_normalisation import process_data   
-
+from types import SimpleNamespace
 
 
 def create_csv(path, rows):
@@ -52,11 +47,8 @@ def test_process_data(tmp_path, monkeypatch):
 
     create_csv(input_csv, rows)
 
-    
-    monkeypatch.setattr(config, "env", type("E", (), {
-        "CSV_SINK": str(input_csv),
-        "CLEAN_DATA": str(output_csv)
-    }))
+    cfg = SimpleNamespace(CSV_SINK=str(input_csv), CLEAN_DATA=str(output_csv))
+    monkeypatch.setattr(config, "env", cfg, raising=False)
 
     # Run the function
     process_data()
