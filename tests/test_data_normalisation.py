@@ -8,9 +8,7 @@ import nifipulse.config as config
 from nifipulse.data_normalisation import process_data   
 
 
-# -----------------------------
-# Helper to create temp CSV data
-# -----------------------------
+
 def create_csv(path, rows):
     fieldnames = ["timestamp", "instance", "metric_name", "component_name",
                   "component_type", "component_id", "value"]
@@ -22,17 +20,15 @@ def create_csv(path, rows):
             writer.writerow(r)
 
 
-# -----------------------------
-# TEST: process_data filters, maps, converts and writes results
-# -----------------------------
+
 def test_process_data(tmp_path, monkeypatch):
-    # Temporary paths
+   
     input_csv = tmp_path / "input.csv"
     output_csv = tmp_path / "clean.csv"
 
     # Fake rows
     rows = [
-        # 👎 should be filtered (value = 0 AND metric starts with nifi_amount)
+     
         {
             "timestamp": "2025-01-01T00:00:00Z",
             "instance": "nifi1",
@@ -42,7 +38,7 @@ def test_process_data(tmp_path, monkeypatch):
             "component_id": "abc123",
             "value": "0"
         },
-        # 👍 should be kept and mapped
+       
         {
             "timestamp": "2025-01-01T00:01:00Z",
             "instance": "nifi1",
@@ -56,7 +52,7 @@ def test_process_data(tmp_path, monkeypatch):
 
     create_csv(input_csv, rows)
 
-    # Override config.env paths
+    
     monkeypatch.setattr(config, "env", type("E", (), {
         "CSV_SINK": str(input_csv),
         "CLEAN_DATA": str(output_csv)
@@ -65,13 +61,13 @@ def test_process_data(tmp_path, monkeypatch):
     # Run the function
     process_data()
 
-    # ----------- Validate output CSV -----------
+    # Validate output CSV 
     assert output_csv.exists(), "Output file should be created"
 
     with open(output_csv, encoding='utf-8') as f:
         reader = list(csv.DictReader(f))
 
-    # One row should remain
+    
     assert len(reader) == 1
 
     row = reader[0]
