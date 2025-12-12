@@ -1,0 +1,40 @@
+name: CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  VERSION: v1.${{ github.run_number }}
+
+jobs:
+  release-main:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Docker (prod)
+        run: docker build -t nifipulse-prod .
+
+      - name: Create and push git tag
+        run: |
+          echo "Tagging version: $VERSION"
+          git tag "$VERSION"
+          git push origin "$VERSION"
+
+      - name: Log in to Docker Hub
+        run: |
+          echo "${{ secrets.DOCKER_PASSWORD }}" \
+          | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Push Docker image
+        run: |
+          docker tag nifipulse-prod myregistry/nifipulse:${{ env.VERSION }}
+          docker push myregistry/nifipulse:${{ env.VERSION }}
+          docker tag nifipulse-prod myregistry/nifipulse:latest
+          docker push myregistry/nifipulse:latest
+
+      # Optional: Deploy to server/k8s here
+      # - name: Deploy
+      #   run: ./deploy.sh
