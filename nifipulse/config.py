@@ -3,10 +3,11 @@ from urllib.parse import quote_plus
 
 class BaseConfig:
     # Shared defaults
-    RESULTS_DIR = "results"
     PROM_URL = "http://localhost:9090/api/v1/query"
-    CSV_SINK = "results/prometheus_metrics_log.csv"
-    CLEAN_DATA = "results/nifi_metrics_propre.csv" 
+    RESULTS_DIR = os.getenv("RESULTS_DIR", "results")
+    CSV_SINK = os.getenv("CSV_SINK", os.path.join(RESULTS_DIR, "prometheus_metrics_log.csv"))
+    CLEAN_DATA = os.getenv("CLEAN_DATA", os.path.join(RESULTS_DIR, "nifi_metrics_clean.csv"))
+    FACT_METRICS = os.getenv("FACT_METRICS", os.path.join(RESULTS_DIR, "fact_metrics_export.csv"))
     # Build DSN from env (override PGHOST to 'postgres' when running inside Docker)
     PW = quote_plus(os.getenv('PGPASSWORD', 'postgres'))
     PG_DSN = os.getenv(

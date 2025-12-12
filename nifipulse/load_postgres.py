@@ -2,11 +2,17 @@ import pandas as pd
 from sqlalchemy import create_engine, text
 from nifipulse import config
 
-def load_postgres(clean_data):
+def load_postgres(clean_data: str, fact_metrics: str | None = None):
     print(" inserting into PostgreSQL ... ")
     df = pd.read_csv(clean_data, parse_dates=['timestamp_utc'])
     df['timestamp_utc'] = pd.to_datetime(df['timestamp_utc'], utc=True)
 
+    # Basic schema validation
+    required = {"timestamp_utc","instance","metric_name","original_unit","component_name","component_type","value"}
+    missing = required - set(df.columns)
+    if missing:
+        raise ValueError(f"Missing columns in cleaned CSV: {sorted(missing)}")
+    
     #  Connexion PostgreSQL
     # Use DSN from config (works on host and in Docker; override via env)
     engine = create_engine(
@@ -14,7 +20,7 @@ def load_postgres(clean_data):
         connect_args={"options": "-c client_encoding=UTF8"}
     )
 
-    print("- Connexion PostgreSQL OK")
+    print("- PostgreSQL connection OK")
 
     # Sanity check: schema exists
     with engine.begin() as conn:
@@ -59,7 +65,7 @@ def load_postgres(clean_data):
                 "h": ts2.hour, "min": ts2.minute, "s": ts2.second
             })
 
-    print("- Dimensions insérées")
+    print("- Dimensions inserted successfully")
 
     #  CHARGER LES IDS
     dim_instance = pd.read_sql("SELECT * FROM dim_instance;", engine)
@@ -88,7 +94,7 @@ def load_postgres(clean_data):
                 "v": row['value']
             })
 
-    print("- Faits insérés avec succès")
+    print("- Facts inserted")
 
     #  EXPORT CSV 
     fact_df = pd.read_sql("""
@@ -102,5 +108,5 @@ def load_postgres(clean_data):
     ORDER BY d.timestamp_utc;
     """, engine)
 
-    fact_df.to_csv("metrics_star_schema.csv", index=False)
-    print("- Export fichier csv")
+    fact_df.to_csv(fact_metrics, index=False)
+    print(f"- CSV exported: {fact_metrics}")

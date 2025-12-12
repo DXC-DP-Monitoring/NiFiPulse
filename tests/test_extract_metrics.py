@@ -14,6 +14,7 @@ def mock_env(tmp_path):
         RESULTS_DIR = str(results_dir)
         CSV_SINK = str(results_dir / "raw.csv")
         CLEAN_DATA = str(results_dir / "clean.csv")
+        FACT_METRICS = str(results_dir / "fact.csv")
         PROM_URL = "http://fake-prometheus/api"
 
     with patch.object(config, "env", Env):

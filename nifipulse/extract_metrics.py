@@ -38,7 +38,7 @@ def nifipulse(poll_count=10, interval=5):
 
     #Only load to Postgres if cleaned data exists
     if _csv_has_rows(config.env.CLEAN_DATA):
-        load_postgres(config.env.CLEAN_DATA)
+        load_postgres(config.env.CLEAN_DATA, config.env.FACT_METRICS)
     else:
         print("No cleaned data to load into Postgres; skipping load.")
         return
