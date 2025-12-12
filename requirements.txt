@@ -1,5 +1,21 @@
 certifi==2025.10.5
 charset-normalizer==3.4.4
+greenlet==3.3.0
 idna==3.11
+iniconfig==2.3.0
+-e git+https://github.com/DXC-DP-Monitoring/NiFiPulse.git@1d86f5d89bc746cb1f2087a95fb264e3b2e7b53a#egg=nifipulse
+numpy==2.3.5
+packaging==25.0
+pandas==2.3.3
+pluggy==1.6.0
+psycopg2-binary==2.9.11
+Pygments==2.19.2
+pytest==9.0.2
+python-dateutil==2.9.0.post0
+pytz==2025.2
 requests==2.32.5
+six==1.17.0
+SQLAlchemy==2.0.44
+typing_extensions==4.15.0
+tzdata==2025.2
 urllib3==2.5.0
