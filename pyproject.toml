@@ -24,3 +24,13 @@ include = ["nifipulse*"]
 
 [tool.setuptools.package-data]
 nifipulse = ["metrics_list.txt"]
+
+[project.optional-dependencies]
+dev = [
+  "pytest",
+  "flake8",
+  "black",
+  "mypy",
+  "types-requests",
+  "python-dotenv"
+]

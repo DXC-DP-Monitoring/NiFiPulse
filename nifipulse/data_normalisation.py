@@ -15,7 +15,7 @@ METRIC_MAPPING = {
 }
 
 def process_data():
-    print(f" Démarrage du traitement de {config.env.CSV_SINK} ")
+    print(f"Starting normalization:  {config.env.CSV_SINK} ")
     
     stats = {"total": 0, "kept": 0, "filtered": 0}
     
@@ -88,11 +88,12 @@ def process_data():
                 stats["kept"] += 1
 
     except FileNotFoundError:
-        print(f"Erreur : Le fichier {config.env.CSV_SINK} n'existe pas.")
+        print(f"Error: source CSV not found: {config.env.CSV_SINK}")
         return
 
-    print(" Traitement terminé ")
-    print(f"Lignes lues      : {stats['total']}")
-    print(f"Lignes filtrées  : {stats['filtered']} (Zeros inutiles)")
-    print(f"Lignes gardées   : {stats['kept']} (Sauvegardées dans {config.env.CLEAN_DATA})")
-    print(f"Taux de réduction: {round((stats['filtered']/stats['total'])*100, 1)}%")
+    print("Normalization complete:")
+    print(f"- Rows read      : {stats['total']}")
+    print(f"- Rows filtered  : {stats['filtered']} (zero-value amount metrics)")
+    print(f"- Rows kept      : {stats['kept']} (written to {config.env.CLEAN_DATA})")
+    reduction = (stats['filtered'] / stats['total'] * 100) if stats['total'] else 0.0
+    print(f"- Reduction rate : {round(reduction, 1)}%")

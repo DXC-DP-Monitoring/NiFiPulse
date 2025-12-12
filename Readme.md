@@ -18,6 +18,7 @@ After running `docker compose up` run:
 - Verify tables: 
   1. Ubuntu: `docker exec -it postgres sh -c 'psql -U postgres -d metrics_db -c "\dt"'`
   2. Windows: `docker exec -it postgres psql -U postgres -d metrics_db -c "\dt"`
+- Run: `pip install -r requirements.txt`
 - Run: `pip install -e .`
 - Run ETL: `nifipulse --poll <number_of_polls_10_by_default_0_for_infinite>`
 - Run quick sanity check:
@@ -80,4 +81,4 @@ Nifi Registery config
 
 This project is licensed under the Apache License 2.0. See the `LICENSE` file for the full license text.
 
-Copyright (c) 2025 Amina BOUHAMRA, Fadwa EL AMRAOUI, Nawar TOUMI, Soukaina BOUCETTA
+Copyright (c) 2025 Amina BOUHAMRA, Fadwa EL AMRAOUI, Nawar TOUMI, Soukayna BOUCETTA
