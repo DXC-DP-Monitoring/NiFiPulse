@@ -4,13 +4,16 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch: {}
 
 env:
   VERSION: v1.${{ github.run_number }}
 
 jobs:
   release-main:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
 
@@ -34,7 +37,3 @@ jobs:
           docker push myregistry/nifipulse:${{ env.VERSION }}
           docker tag nifipulse-prod myregistry/nifipulse:latest
           docker push myregistry/nifipulse:latest
-
-      # Optional: Deploy to server/k8s here
-      # - name: Deploy
-      #   run: ./deploy.sh
