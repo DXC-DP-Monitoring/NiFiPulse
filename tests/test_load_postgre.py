@@ -6,19 +6,19 @@ from nifipulse.load_postgres import load_postgres
 
 def test_load_postgres_success(tmp_path):
 
-    # 1. Create fake CSV
+    # Create fake CSV
     csv_file = tmp_path / "sample.csv"
     csv_file.write_text(
         "timestamp_utc,instance,metric_name,original_unit,component_name,component_type,value\n"
         "2025-01-01 12:00:00,server1,cpu,%,cpu_component,system,45\n"
     )
 
-    # 2. Mock engine + conn
+    # Mock engine + conn
     mock_engine = MagicMock()
     mock_conn = MagicMock()
     mock_engine.begin.return_value.__enter__.return_value = mock_conn
 
-    # 3. Fake DataFrames for 5 read_sql calls
+    #  Fake DataFrames 
     fake_dim_instance = pd.DataFrame({
         "instance_id": [1],
         "instance_name": ["server1"]
@@ -57,7 +57,7 @@ def test_load_postgres_success(tmp_path):
         fake_dim_metric,
         fake_dim_component,
         fake_dim_date,
-        fake_fact_export    # 5th call for export
+        fake_fact_export    
     ]
 
     with patch("nifipulse.load_postgres.create_engine", return_value=mock_engine), \
