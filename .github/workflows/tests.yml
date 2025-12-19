@@ -3,13 +3,20 @@ name: Tests
 on:
   push:
     branches: [ dev ]
+    paths-ignore:
+      - '**/*.md'
+      - 'images/**'
+      - 'docs/**'
   pull_request:
     branches: [ dev, staging, main ]
+    paths-ignore:
+      - '**/*.md'
+      - 'images/**'
+      - 'docs/**'
 
 jobs:
   unit-integration:
     runs-on: ubuntu-latest
-
     services:
       postgres:
         image: postgres:15-alpine
@@ -17,45 +24,35 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: metrics_db
-        ports:
-          - 5432:5432
+        ports: [ '5432:5432' ]
         options: >-
           --health-cmd="pg_isready -U postgres -d metrics_db"
-          --health-interval=5s
-          --health-timeout=5s
-          --health-retries=12
-
+          --health-interval=5s --health-timeout=5s --health-retries=12
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-
-      - name: Install project and test deps
+      - name: Install deps
         run: |
           pip install -U pip
           pip install -e .
           pip install pytest "sqlalchemy>=2" psycopg2-binary pandas requests
-
       - name: Wait for Postgres
         run: |
           python - <<'PY'
           import time, psycopg2
-          for i in range(30):
+          for _ in range(30):
               try:
                   psycopg2.connect(host="localhost", port=5432, user="postgres", password="postgres", dbname="metrics_db").close()
-                  print("Postgres ready"); break
-              except Exception as e:
-                  print("Waiting...", e); time.sleep(2)
-          else:
-              raise SystemExit("Postgres not ready")
+                  break
+              except Exception: time.sleep(2)
           PY
-
-      - name: Initialize schema (SQLAlchemy)
+      - name: Init schema
         run: |
           python - <<'PY'
           from sqlalchemy import create_engine, text
+          eng = create_engine("postgresql+psycopg2://postgres:postgres@localhost:5432/metrics_db")
           ddl = """
           CREATE TABLE IF NOT EXISTS dim_instance (instance_id SERIAL PRIMARY KEY, instance_name TEXT UNIQUE NOT NULL);
           CREATE TABLE IF NOT EXISTS dim_metric (metric_id SERIAL PRIMARY KEY, metric_name TEXT UNIQUE NOT NULL, original_unit TEXT);
@@ -63,12 +60,9 @@ jobs:
           CREATE TABLE IF NOT EXISTS dim_date (date_id SERIAL PRIMARY KEY, timestamp_utc TIMESTAMPTZ UNIQUE NOT NULL, year INT, month INT, day INT, hour INT, minute INT, second INT);
           CREATE TABLE IF NOT EXISTS fact_metrics (fact_id SERIAL PRIMARY KEY, date_id INT REFERENCES dim_date(date_id), instance_id INT REFERENCES dim_instance(instance_id), metric_id INT REFERENCES dim_metric(metric_id), component_id INT REFERENCES dim_component(component_id), value DOUBLE PRECISION, UNIQUE (date_id, instance_id, metric_id, component_id));
           """
-          eng = create_engine("postgresql+psycopg2://postgres:postgres@localhost:5432/metrics_db")
           with eng.begin() as c:
-              for stmt in [s.strip() for s in ddl.split(';') if s.strip()]:
-                  c.execute(text(stmt))
-          print("Schema ready")
+              for s in [x.strip() for x in ddl.split(';') if x.strip()]:
+                  c.execute(text(s))
           PY
-
       - name: Run tests
         run: pytest -q

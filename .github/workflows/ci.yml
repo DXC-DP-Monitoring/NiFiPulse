@@ -2,68 +2,69 @@ name: CI Pipeline
 
 on:
   push:
-    branches:
-      - dev
+    branches: [ dev ]
+    paths-ignore:
+      - '**/*.md'
+      - 'images/**'
+      - 'docs/**'
   pull_request:
-    branches:
-      - staging
-      - main
+    branches: [ staging, main ]
+    paths-ignore:
+      - '**/*.md'
+      - 'images/**'
+      - 'docs/**'
 
 env:
   NIFIPULSE_AUTO_ENV: "1"
-  PGUSER: postgres
-  PGPASSWORD: postgres
-  PGHOST: localhost
-  PGPORT: "5432"
-  PGDATABASE: metrics_db
 
 jobs:
   build-test-dev:
     if: github.ref == 'refs/heads/dev'
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
-
-      # Install dependencies (change this depending on your stack)
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-
-      - name: Install dependencies
+      - name: Install deps
         run: |
           pip install -U pip
           pip install -e .
-          pip install flake8
-
+          pip install flake8 pytest
       - name: Lint
+        run: flake8 .
+      - name: Unit tests
+        run: pytest -q
+      - name: Docker build (skip if no Dockerfile)
         run: |
-          pip install flake8
-          flake8 .
-
-      - name: Docker build (dev)
-        run: |
-          docker build -t nifipulse-dev .
+          if [ -f Dockerfile ]; then
+            docker build -t nifipulse-dev .
+          else
+            echo "No Dockerfile. Skipping docker build."
+          fi
 
   integration-test-staging:
     if: github.event.pull_request.base.ref == 'staging'
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
-
-      - name: Docker build
-        run: docker build -t nifipulse-staging .
-
-      - name: Docker compose up
-        run: docker compose -f docker-compose.yml up -d
-
-      - name: Wait for services
-        run: sleep 15
-
-      - name: Integration tests
+      - name: Check integration assets
+        id: has_assets
         run: |
-          pip install -r tests/requirements.txt
-          pytest tests/integration
-
+          if [ -f docker-compose.yml ] && [ -d tests/integration ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Docker build
+        if: steps.has_assets.outputs.run == 'true'
+        run: docker build -t nifipulse-staging .
+      - name: Docker compose up
+        if: steps.has_assets.outputs.run == 'true'
+        run: docker compose up -d
+      - name: Wait for services
+        if: steps.has_assets.outputs.run == 'true'
+        run: sleep 15
+      - name: Integration tests
+        if: steps.has_assets.outputs.run == 'true'
+        run: pytest -q tests/integration

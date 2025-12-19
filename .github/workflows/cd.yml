@@ -2,8 +2,7 @@ name: CD Pipeline
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   workflow_dispatch: {}
 
 env:
@@ -11,29 +10,16 @@ env:
 
 jobs:
   release-main:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && hashFiles('Dockerfile') != ''
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
-
       - name: Build Docker (prod)
-        run: docker build -t nifipulse-prod .
-
-      - name: Create and push git tag
+        run: docker build -t ghcr.io/${{ github.repository }}:${{ env.VERSION }} .
+      - name: Login to GHCR
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+      - name: Push image
         run: |
-          echo "Tagging version: $VERSION"
-          git tag "$VERSION"
-          git push origin "$VERSION"
-
-      - name: Log in to Docker Hub
-        run: |
-          echo "${{ secrets.DOCKER_PASSWORD }}" \
-          | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-
-      - name: Push Docker image
-        run: |
-          docker tag nifipulse-prod myregistry/nifipulse:${{ env.VERSION }}
-          docker push myregistry/nifipulse:${{ env.VERSION }}
-          docker tag nifipulse-prod myregistry/nifipulse:latest
-          docker push myregistry/nifipulse:latest
+          docker push ghcr.io/${{ github.repository }}:${{ env.VERSION }}
+          docker tag ghcr.io/${{ github.repository }}:${{ env.VERSION }} ghcr.io/${{ github.repository }}:latest
+          docker push ghcr.io/${{ github.repository }}:latest
