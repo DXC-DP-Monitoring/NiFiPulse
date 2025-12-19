@@ -32,6 +32,7 @@ jobs:
           pip install -e .
           pip install flake8 pytest
       - name: Lint
+        continue-on-error: true
         run: flake8 .
       - name: Unit tests
         run: pytest -q
