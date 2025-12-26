@@ -48,6 +48,28 @@ After running `docker compose up` run:
     LIMIT 20;"
 ---
 
+## CI usage and “[skip ci]”
+Our CI runs on every push to `dev` and on PRs to `staging`/`main`. To reduce waste:
+- CI auto-skips for docs and images via `paths-ignore`.
+- Optional: add `[skip ci]` in the commit message (push), or in the PR title/body (pull_request) for one-off skips.
+
+Use `[skip ci]` only for:
+- Docs-only edits (README, Alerting.md, state_of_art PDFs).
+- Image asset updates under `images/`.
+- Non-code text changes (typos, formatting).
+
+Do NOT use `[skip ci]` when changing:
+- Python code (`nifipulse/**`), tests (`tests/**`), dependencies (`pyproject.toml`, `requirements*.txt`).
+- CI/CD files (`.github/workflows/**`), Dockerfile/compose, SQL schema, Prometheus/Grafana configs.
+
+Examples:
+- `git commit -m "docs: update Alerting.md [skip ci]" && git push`
+- PR title: `docs: update dashboards [skip ci]`
+
+CI details:
+- Concurrency cancels superseded runs to save compute.
+- Pip caching speeds installs; lint is advisory (`continue-on-error: true`) until we enforce style.
+
 ## Architecture
 ![nifi_architecture](images/nifi_archi.png) 
 
