@@ -14,8 +14,8 @@ def main():
     parser.add_argument(
         "--interval",
         type=int,
-        default=5,
-        help="Seconds between polling cycles (default 5)."
+        default=60,
+        help="Seconds between polling cycles (default 60)."
     )
     args = parser.parse_args()
     nifipulse(poll_count=args.poll, interval=args.interval)
