@@ -73,6 +73,9 @@ CI details:
 ## Architecture
 ![nifi_architecture](images/nifi_archi.png) 
 
+## Alerting Engine Architecture
+![nifi_architecture](images/alertingE_ARC.png) 
+
 ## State of Art
 - [State of Art FR](state_of_art/Etat_de_l_art.pdf)
 - [State of Art Eng](state_of_art/State_of_art.pdf)
