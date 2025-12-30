@@ -9,7 +9,7 @@ from nifipulse.utils import abs_ff_path, path_tofolder, _csv_has_rows
 from nifipulse.data_normalisation import process_data
 from nifipulse.load_postgres import load_postgres
 
-def nifipulse(poll_count=10, interval=5):
+def nifipulse(poll_count=10, interval=60):
     """
     poll_count: number of cycles to poll (0 = run forever)
     interval: seconds to wait between cycles
