@@ -71,7 +71,7 @@ CI details:
 - Pip caching speeds installs; lint is advisory (`continue-on-error: true`) until we enforce style.
 
 ## Architecture
-![nifi_architecture](images/nifi_archi.png) 
+![nifi_architecture](images/Archetecture_NifiPulse.PNG ) 
 
 ## Alerting Engine Architecture
 ![nifi_architecture](images/alertingE_ARC.png) 
