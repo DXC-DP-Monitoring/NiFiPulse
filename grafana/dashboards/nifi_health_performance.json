@@ -19,7 +19,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 0,
+  "id": 1,
   "links": [],
   "panels": [
     {
@@ -175,6 +175,16 @@
           "color": {
             "mode": "thresholds"
           },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -200,21 +210,9 @@
       },
       "id": 5,
       "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
+        "cellHeight": "sm",
+        "frameIndex": 4,
+        "showHeader": true
       },
       "pluginVersion": "12.3.0",
       "targets": [
@@ -233,7 +231,7 @@
         }
       ],
       "title": "[QB] FlowFiles Queued",
-      "type": "stat"
+      "type": "table"
     },
     {
       "datasource": {
@@ -282,6 +280,7 @@
       "id": 6,
       "options": {
         "cellHeight": "sm",
+        "frameIndex": 13,
         "showHeader": true
       },
       "pluginVersion": "12.3.0",
@@ -658,7 +657,7 @@
               }
             ]
           },
-          "unit": "ms"
+          "unit": "ns"
         },
         "overrides": []
       },
@@ -1000,12 +999,12 @@
     "list": []
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "nifi_health_performance_view",
   "uid": "adnzhcs",
-  "version": 51
+  "version": 53
 }
