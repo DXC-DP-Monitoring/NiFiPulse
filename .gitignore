@@ -12,3 +12,4 @@ pgdata
 *.egg-info
 *__pycache__
 .~lock.prometheus_metrics_log*
+notes.txt
