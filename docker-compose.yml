@@ -63,6 +63,16 @@ services:
       - ./db/init:/docker-entrypoint-initdb.d:ro
     restart: unless-stopped
 
+  nifipulse:
+    image: ghcr.io/OWNER/NiFiPulse:latest
+    depends_on: [prometheus, postgres]
+    environment:
+      - PROM_URL=http://prometheus:9090/api/v1/query
+      - PG_DSN=postgresql+psycopg2://postgres:postgres@postgres:5432/metrics_db
+    volumes:
+      - ./results:/app/results
+    restart: unless-stopped
+
 volumes:
   grafana-data:
   pgdata:
