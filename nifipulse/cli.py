@@ -5,11 +5,10 @@ def main():
     parser = argparse.ArgumentParser(description="Run NifiPulse ETL CLI")
     parser.add_argument(
         "--poll",
-        nargs="?",
-        const=10,            # `--poll` with no value → 10
         type=int,
-        default=10,          # no `--poll` at all → 10
-        help="Number of polling cycles (default 10). Use --poll 0 to run forever."
+        default=10, 
+        metavar="N",
+        help="Number of polling cycles (default 10; use 0 to run forever)."
     )
     parser.add_argument(
         "--interval",

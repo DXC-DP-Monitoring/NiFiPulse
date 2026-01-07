@@ -1,0 +1,28 @@
+# VCS and CI/CD
+.git
+.github/
+
+# Python build artefacts and envs
+__pycache__/
+*.egg-info
+.venv/
+venv/
+.env
+
+# Local outputs and data
+results/
+*.csv
+nifi_data/
+nifi_logs/
+nifi_registry_data/
+grafana-data/
+pgdata/
+
+# Assets not needed for runtime image
+Alerting.md
+images/
+tests/
+
+# Compose/config files not required in image
+docker-compose.yml
+prometheus.yml
